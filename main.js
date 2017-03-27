@@ -8,3 +8,9 @@ function init(entry) {
 }
 
 $(document).ready(init);
+
+var app = angular.module("TechLabIDE", []); 
+
+app.controller("Ctrl", function($scope) {
+  
+});
