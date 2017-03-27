@@ -1,0 +1,36 @@
+{
+  "app": {
+    "background": {
+      "scripts": ["js/background.js"]
+    }
+  },
+  "manifest_version": 2,
+  "name": "TechLabIDE",
+  "version": "0.1.0",
+
+  "minimum_chrome_version": "31.0",
+  "offline_enabled": false,
+  "description": "Graphical IDE for programming arduino",
+  "icons": {"128": "media/icon128.png", "64": "media/icon64.png"},
+  "author": "BardinPetr",
+
+  "externally_connectable": {
+    "matches": ["*://.com/*"]
+  },
+  "sockets": {
+    "tcp": {
+      "connect": "*"
+    }
+  },
+
+  "permissions": [
+    {"fileSystem": ["write"]}
+  ],
+  "file_handlers": {
+    "text": {
+      "types": ["application/tlab",
+                "application/ino"],
+      "extensions": ["tlab", "ino"]
+    }
+  }
+}
