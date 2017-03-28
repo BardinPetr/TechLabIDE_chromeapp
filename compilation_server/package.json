@@ -1,0 +1,20 @@
+{
+    "name": "compilation_server",
+    "version": "0.1.0",
+    "description": "Node Arduino compilation server",
+    "main": "index.js",
+    "dependencies": {
+        "path": "^0.12.7",
+        "fs": "^0.0.1-security",
+        "shelljs": "^0.7.7",
+        "http": "^0.0.0"
+    },
+    "devDependencies": {},
+    "scripts": {},
+    "keywords": [
+        "arduino",
+        "nodejs"
+    ],
+    "author": "BardinPetr",
+    "license": "GPL-3.0"
+}
