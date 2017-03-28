@@ -9,6 +9,11 @@
 
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="main.js" type="text/javascript"></script>
 </head>
 
 <body ng-app="TechLabIDE" ng-controller="Ctrl" ng-init="init()">
@@ -57,9 +62,11 @@
                     </li>
                     <li>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Порт: {{port}} 
-                        <span class="caret"></span>
-                        </button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="media/icons/usb_m.png"/>
+                                Порт: {{port}} 
+                                <span class="caret"></span>
+                            </button>
                             <ul class="dropdown-menu">
                                 <li ng-repeat="i in ports">
                                     <a data-ng-click="setPort(i)" ng-bind="i" href="#"></a>
@@ -69,9 +76,11 @@
                     </li>
                     <li>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Плата: {{board}} 
-                        <span class="caret"></span>
-                        </button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="media/icons/memory_m.png"/>
+                                Плата: {{board}}
+                                <span class="caret"></span>
+                            </button>
                             <ul class="dropdown-menu">
                                 <li ng-repeat="i in boards">
                                     <a data-ng-click="setBoard(i)" ng-bind="i" href="#"></a>
@@ -89,13 +98,6 @@
             </div>
         </div>
     </nav>
-    <div class="container theme-showcase" role="main">
-
-    </div>
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="bower_components/angular/angular.min.js"></script>
-    <script src="main.js" type="text/javascript"></script>
 </body>
 
 </html>
