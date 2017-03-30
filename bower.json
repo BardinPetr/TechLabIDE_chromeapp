@@ -4,7 +4,11 @@
   "dependencies": {
     "bootstrap": "^3.3.0",
     "angular": "^1.6.0",
-    "jquery": "^3.2.0"
+    "jquery": "^3.2.0",
+    "blockly-bq": "http://github.com/vrruiz/blockly.git",
+    "underscore": "~1.6.0",
+    "requirejs": "~2.1.15",
+    "highlightjs": "~8.8.0"
   },
   "private": true
 }

@@ -9,47 +9,42 @@
 
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="visualino.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/highlightjs/styles/default.css">
 </head>
 
 <body>
     <div ng-app="TechLabIDE" ng-controller="Ctrl" ng-init="init();">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid" style="height:85px">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid" style="height:75px">
                 <div style="" class="navbar-header">
-                    <a style="padding:0 15px; line-height:85px;" class="navbar-brand">TechLab IDE</a>
+                    <a style="padding:0 15px; line-height:70px;" class="navbar-brand">TechLab IDE</a>
                 </div>
 
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="padding:0 15px; line-height:85px;">
+                <div class="collapse navbar-collapse" style="line-height:70px;">
                     <ul class="nav navbar-nav">
-                        <li>
-                            <div class="btn-group">
-                                <button type="button" style="height:75px" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Файл 
-                        <span class="caret"></span>
-                        </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" data-ng-click="new_onClick()">Новый</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#" data-ng-click="open_onClick()">Открыть</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#" data-ng-click="savecode_onClick()">Сохранить код</a></li>
-                                    <li><a href="#" data-ng-click="saveblocks_onClick()">Сохранить блоки</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#" data-ng-click="set_onClick()">Настройки</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="divider">
-                            <a></a>
+                        <li class="dropdown">
+                            <a href="#" style="padding:0 15px; line-height:70px; vertical-align: middle" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <img src="media/icons/dots-vertical.png" />
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" data-ng-click="new_onClick()">Новый</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#" data-ng-click="open_onClick()">Открыть</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#" data-ng-click="savecode_onClick()">Сохранить код</a></li>
+                                <li><a href="#" data-ng-click="saveblocks_onClick()">Сохранить блоки</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#" data-ng-click="set_onClick()">Настройки</a></li>
+                            </ul>
                         </li>
                         <li>
                             <div class="btn-group">
-                                <button class="btn btn-primary" style="height:75px" data-ng-click="compile()">
-                                    <img src="media/icons/check_code.png"/>
-                                    <p style="color:black;">Проверить</p>
+                                <button class="btn btn-primary" style="height:60px" data-ng-click="compile()">
+                                    <p style="color:black;"><img src="media/icons/check_code.png"/>Проверить</p>
                                 </button>
-                                <button class="btn btn-warning" style="height:75px" data-ng-click="upload()">
-                                    <img src="media/icons/upload_code.png"/>
-                                    <p style="color:black;">Загрузить</p>
+                                <button class="btn btn-warning" style="height:60px" data-ng-click="upload()">
+                                    <p style="color:black;"><img src="media/icons/upload_code.png"/>Загрузить</p>
                                 </button>
                             </div>
                         </li>
@@ -87,23 +82,38 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <button class="btn btn-default " style="height:75px" data-ng-click="terminal()">
-                                <img src="media/icons/terminal.png"/>
-                                <p>Терминал</p>
+                            <button class="btn btn-default " style="height:60px" data-ng-click="terminal()">
+                                <p><img src="media/icons/terminal.png"/>Терминал</p>
                             </button>
                         </li>
-                        <li style="margin-right: 5px; margin-left: 15px;">
-                            <img src="media/icons/power_plug_off.png" />
+                        <li style="margin-right: 15px; margin-left: 15px;">
+                            <img src="media/icons/power-plug-off.png" />
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
+        <xml id="startBlocks" style="display: none;">
+            <block type="controls_setupLoop" deletable="false"></block>
+        </xml>
+        <div id="wrap">
+            <div id="blockly" style="float: left; width: 66%;"></div>
+            <div id="code" style="float: right; width: 34%;"></div>
+        </div>
     </div>
 </body>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/underscore/underscore.js"></script>
+<script src="bower_components/highlightjs/highlight.pack.js"></script>
+<script src="bower_components/blockly-bq/blockly_compressed.js"></script>
+<script src="bower_components/blockly-bq/blocks_compressed.js"></script>
+<script src="bower_components/blockly-bq/arduino_compressed.js"></script>
+<script src="js/roboblocks.js"></script>
+
+<script src="js/main_roboblocks.js" type="text/javascript"></script>
 <script src="main.js" type="text/javascript"></script>
 
 </html>
