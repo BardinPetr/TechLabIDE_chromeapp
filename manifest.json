@@ -1,38 +1,40 @@
 {
-  "app": {
-    "background": {
-      "scripts": ["js/background.js"]
-    }
-  },
-  "manifest_version": 2,
-  "name": "TechLabIDE",
-  "version": "0.1.0",
+    "app": {
+        "background": {
+            "scripts": ["js/background.js"]
+        }
+    },
+    "manifest_version": 2,
+    "name": "TechLabIDE",
+    "version": "0.1.0",
 
-  "minimum_chrome_version": "23.0",
-  "offline_enabled": false,
-  "description": "Graphical IDE for programming arduino",
-  "icons": {"128": "media/icon128.png", "64": "media/icon64.png"},
-  "author": "BardinPetr",
+    "minimum_chrome_version": "23.0",
+    "offline_enabled": false,
+    "description": "Graphical IDE for programming arduino",
+    "icons": { "128": "media/icon128.png", "64": "media/icon64.png" },
+    "author": "BardinPetr",
 
-  "externally_connectable": {
-    "matches": ["*://.com/*"]
-  },
-  "sockets": {
-    "tcp": {
-      "connect": "*"
-    }
-  },
+    "externally_connectable": {
+        "matches": ["http://localhost/*"]
+    },
+    "sockets": {
+        "tcp": {
+            "connect": "*"
+        }
+    },
+    "content_security_policy": "default-src 'self' http://localhost/*",
 
-  "permissions": [
-    {"fileSystem": ["write"]},
-    "serial",
-    "usb"
-  ],
-  "file_handlers": {
-    "text": {
-      "types": ["application/tlab",
-                "application/ino"],
-      "extensions": ["tlab", "ino"]
+    "permissions": [
+        { "fileSystem": ["write"] },
+        "serial",
+        "usb"
+    ],
+    "file_handlers": {
+        "text": {
+            "types": ["application/tlab",
+                "application/ino"
+            ],
+            "extensions": ["tlab", "ino"]
+        }
     }
-  }
 }
