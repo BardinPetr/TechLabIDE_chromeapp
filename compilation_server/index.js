@@ -21,9 +21,7 @@ http.createServer(function(request, response) {
         if (data == '/favicon.ico') {
             response.writeHead(200);
         } else {
-            data = data.replace(/%20/g, ' ');
-            data = data.replace(/%22/g, '\"');
-            data = data.replace(/%27/g, '\'');
+            data = decodeURI(data);
             data = data.substring(7);
 
             arduinopath = arduinopathC;
