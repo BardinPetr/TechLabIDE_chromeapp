@@ -4,7 +4,11 @@ function log(e) {
     console.log(e);
 }
 
-app.controller("Ctrl", function($scope) {
+function getcode() {
+    return document.getElementById('info').value;
+}
+
+app.controller("Ctrl", function($scope, $http) {
     $scope.r = 0;
 
     $scope.refreshPorts = function(callback) {
@@ -41,17 +45,29 @@ app.controller("Ctrl", function($scope) {
     };
     $scope.setBoard = function(name) {
         $scope.board = name;
+        $scope._board = $scope._boards[$scope.boards.findIndex(function(d) { return d == name })];
     };
 
     //Sketch
     $scope.compile = function() {
+        var code = getcode();
+        code = code.replace(/ /g, '%20');
+        code = code.replace(/\"/g, '%22');
+        code = code.replace(/\n/g, '%0A');
 
+        $http.get("http://localhost:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code }))
+            .then(function(response) {
+                log(response.data)
+            }, function(response) {
+                log(response.statusText);
+            });
     };
 
     $scope.upload = function() {
 
     };
 
+    //Terminal
     $scope.terminal = function() {
 
     };
@@ -59,12 +75,14 @@ app.controller("Ctrl", function($scope) {
     //init
     $scope.init = function() {
         $scope.boards = ['arduino uno', 'arduino nano', 'arduino mega', 'arduino micro'];
+        $scope._boards = ['arduino:avr:uno', 'arduino:avr:nano', 'arduino:avr:mega'];
         $scope.board = $scope.boards[0];
-        $scope.connect_img = "media/icons/power_plug/png";
+        $scope._board = $scope._boards[0];
 
         $scope.refreshPorts(function() {
             if ($scope.ports.length > 0) {
                 $scope.port = $scope.ports[0];
+                $scope.$apply();
             } else if ($scope.r < 4) {
                 $scope.refreshPorts(function() {
                     if ($scope.ports.length > 0) {
@@ -74,15 +92,8 @@ app.controller("Ctrl", function($scope) {
                     $scope.$apply();
                 });
             }
-            $scope.$apply();
         });
 
         chrome.runtime.getBackgroundPage(function(bg) {});
-
-        setInterval(function() {
-            $scope.refreshPorts(function() { $scope.$apply(); });
-        }, 10000);
-
-        $scope.$apply();
     };
 });
