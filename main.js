@@ -1,5 +1,7 @@
 var app = angular.module("TechLabIDE", []);
 
+var connection = new SerialConnection();
+
 function log(e) {
     console.log(e);
 }
@@ -42,6 +44,12 @@ app.controller("Ctrl", function($scope, $http) {
     //Port
     $scope.setPort = function(name) {
         $scope.port = name;
+        document.getElementById("connect_img").src = "media/icons/power-plug-off.png";
+
+        connection.disconnect();
+        connection.connect($scope.port);
+        reset();
+        test();
     };
     $scope.setBoard = function(name) {
         $scope.board = name;
@@ -51,20 +59,35 @@ app.controller("Ctrl", function($scope, $http) {
     //Sketch
     $scope.compile = function() {
         var code = getcode();
-        code = code.replace(/ /g, '%20');
-        code = code.replace(/\"/g, '%22');
-        code = code.replace(/\n/g, '%0A');
 
-        $http.get("http://localhost:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code }))
+        var e = "http://localhost:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
+        e = encodeURI(e);
+
+        $http.get(e)
             .then(function(response) {
-                log(response.data)
+                if (response.data.code == 0) {
+                    var hex = response.data.hex;
+                }
             }, function(response) {
                 log(response.statusText);
             });
     };
 
     $scope.upload = function() {
+        var code = getcode();
 
+        var e = "http://localhost:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
+        e = encodeURI(e);
+
+        $http.get(e)
+            .then(function(response) {
+                if (response.data.code == 0) {
+                    var hex = response.data.hex;
+                    upload(hex);
+                }
+            }, function(response) {
+                log(response.statusText);
+            });
     };
 
     //Terminal
