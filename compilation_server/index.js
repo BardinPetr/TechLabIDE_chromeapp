@@ -64,6 +64,7 @@ http.createServer(function(request, response) {
                                 'Content-Length': _output.length
                             });
                             response.write(_output);
+                            response.end();
 
                             shell.rm('-rf', rnd);
                             shell.rm('-rf', rnd_o);
@@ -82,6 +83,7 @@ http.createServer(function(request, response) {
                             'Content-Length': _output.length
                         });
                         response.write(_output);
+                        response.end();
 
                         shell.rm('-rf', rnd);
                         shell.rm('-rf', rnd_o);
