@@ -166,8 +166,8 @@ function stk500_upload(heximage) {
         stk500_prgpage(flashblock, block, 250);
         flashblock = flashblock + 64;
     }
-
-
+    $("#popup_ok_u").show();
+    $("#popup_ok_u").fadeOut(7000);
     timer = 0;
 }
 
