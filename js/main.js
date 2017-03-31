@@ -6,6 +6,49 @@ function log(e) {
     console.log(e);
 }
 
+var accepts_s1 = [{
+    mimeTypes: [
+        "application/tlab"
+    ],
+    extensions: ["tlab"]
+}];
+var accepts_s2 = [{
+    mimeTypes: [
+        "application/ino"
+    ],
+    extensions: ["ino"]
+}];
+var accepts_o = [{
+    mimeTypes: [
+        "application/tlab"
+    ],
+    extensions: ["tlab"]
+}];
+
+function writeFileEntry(writableEntry, opt_blob, callback) {
+    writableEntry.createWriter(function(writer) {
+
+        writer.onerror = errorHandler;
+        writer.onwriteend = callback;
+
+        if (opt_blob) {
+            writer.truncate(opt_blob.size);
+            waitForIO(writer, function() {
+                writer.seek(0);
+                writer.write(opt_blob);
+            });
+        } else {
+            chosenEntry.file(function(file) {
+                writer.truncate(file.fileSize);
+                waitForIO(writer, function() {
+                    writer.seek(0);
+                    writer.write(file);
+                });
+            });
+        }
+    }, errorHandler);
+}
+
 app.controller("Ctrl", function($scope, $http) {
     $scope.r = 0;
 
@@ -22,16 +65,54 @@ app.controller("Ctrl", function($scope, $http) {
 
     //Handlers for "file" dropdown menu
     $scope.new_onClick = function() {
-
+        resetWorkspace();
     };
     $scope.open_onClick = function() {
+        chrome.fileSystem.chooseEntry({ type: 'openFile', accepts: accepts_o }, function(readOnlyEntry) {
 
+            readOnlyEntry.file(function(file) {
+                var reader = new FileReader();
+
+                reader.onloadend = function(e) {
+                    resetWorkspace();
+                    set_xml(e.target.result);
+                };
+
+                reader.readAsText(file);
+            });
+        });
     };
     $scope.savecode_onClick = function() {
-
+        chrome.fileSystem.chooseEntry({ type: 'saveFile', accepts: accepts_s2 }, function(writableFileEntry) {
+            writableFileEntry.createWriter(function(writer) {
+                writer.onerror = function(data) {
+                    log(data);
+                };
+                writer.onwriteend = function(e) {
+                    console.log('write complete');
+                };
+                var blob = new Blob([_get_code()], { type: 'text/plain' });
+                writer.write(blob);
+            }, function(data) {
+                log(data);
+            });
+        });
     };
     $scope.saveblocks_onClick = function() {
-
+        chrome.fileSystem.chooseEntry({ type: 'saveFile', accepts: accepts_s1 }, function(writableFileEntry) {
+            writableFileEntry.createWriter(function(writer) {
+                writer.onerror = function(data) {
+                    log(data);
+                };
+                writer.onwriteend = function(e) {
+                    console.log('write complete');
+                };
+                var blob = new Blob([get_xml()], { type: 'text/plain' });
+                writer.write(blob);
+            }, function(data) {
+                log(data);
+            });
+        });
     };
     $scope.set_onClick = function() {
 

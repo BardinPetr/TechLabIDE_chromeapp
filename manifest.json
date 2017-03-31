@@ -25,13 +25,15 @@
     "content_security_policy": "default-src 'self' http://localhost/*",
 
     "permissions": [
-        { "fileSystem": ["write"] },
+        { "fileSystem": ["write", "retainEntries", "directory"] },
+        "storage",
         "serial",
         "usb"
     ],
     "file_handlers": {
         "text": {
-            "types": ["application/tlab",
+            "types": [
+                "application/tlab",
                 "application/ino"
             ],
             "extensions": ["tlab", "ino"]
