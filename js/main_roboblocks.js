@@ -15,8 +15,12 @@ Blockly.inject(el, {
 Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(),
     document.getElementById('startBlocks'));
 
-//$('.blocklySvg, #blockly').height('150%');
-//$('.blocklySvg').width('100%');
+$('.blocklySvg, #blockly').height('100%');
+$('.blocklySvg').width('100%');
+$('#code').height('100%');
+$('#code').width('33%');
+$('.blocklyTreeRow').height("26px");
+$('.blocklyTreeRow').css("line-height", "26px");
 
 var colors = [
     "",
@@ -70,6 +74,10 @@ function resetWorkspace() {
     Blockly.mainWorkspace.clear();
     Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(),
         document.getElementById('startBlocks'));
+}
+
+function _get_code() {
+    return Blockly.Arduino.workspaceToCode();
 }
 
 function get_code() {
