@@ -25,30 +25,6 @@ var accepts_o = [{
     extensions: ["tlab"]
 }];
 
-function writeFileEntry(writableEntry, opt_blob, callback) {
-    writableEntry.createWriter(function(writer) {
-
-        writer.onerror = errorHandler;
-        writer.onwriteend = callback;
-
-        if (opt_blob) {
-            writer.truncate(opt_blob.size);
-            waitForIO(writer, function() {
-                writer.seek(0);
-                writer.write(opt_blob);
-            });
-        } else {
-            chosenEntry.file(function(file) {
-                writer.truncate(file.fileSize);
-                waitForIO(writer, function() {
-                    writer.seek(0);
-                    writer.write(file);
-                });
-            });
-        }
-    }, errorHandler);
-}
-
 app.controller("Ctrl", function($scope, $http) {
     $scope.r = 0;
 
@@ -74,6 +50,8 @@ app.controller("Ctrl", function($scope, $http) {
                 var reader = new FileReader();
 
                 reader.onloadend = function(e) {
+                    $("#popup_file_o").show();
+                    $("#popup_file_o").fadeOut(3000);
                     resetWorkspace();
                     set_xml(e.target.result);
                 };
@@ -90,6 +68,8 @@ app.controller("Ctrl", function($scope, $http) {
                 };
                 writer.onwriteend = function(e) {
                     console.log('write complete');
+                    $("#popup_file_s").show();
+                    $("#popup_file_s").fadeOut(3000);
                 };
                 var blob = new Blob([_get_code()], { type: 'text/plain' });
                 writer.write(blob);
@@ -106,6 +86,8 @@ app.controller("Ctrl", function($scope, $http) {
                 };
                 writer.onwriteend = function(e) {
                     console.log('write complete');
+                    $("#popup_file_s").show();
+                    $("#popup_file_s").fadeOut(3000);
                 };
                 var blob = new Blob([get_xml()], { type: 'text/plain' });
                 writer.write(blob);
@@ -137,6 +119,7 @@ app.controller("Ctrl", function($scope, $http) {
     $scope.compile = function() {
         $("#popup_started").show();
         $("#popup_started").fadeOut(3000);
+
         var code = _get_code();
 
         var e = "http://localhost:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
@@ -161,6 +144,7 @@ app.controller("Ctrl", function($scope, $http) {
     $scope.upload = function() {
         $("#popup_started").show();
         $("#popup_started").fadeOut(3000);
+
         var code = _get_code();
 
         var e = "http://localhost:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
@@ -192,6 +176,8 @@ app.controller("Ctrl", function($scope, $http) {
         $("#popup_ok_u").hide();
         $("#popup_fail_c").hide();
         $("#popup_fail_u").hide();
+        $("#popup_file_o").hide();
+        $("#popup_file_s").hide();
 
         $scope.boards = ['arduino uno', 'arduino nano', 'arduino mega', 'arduino micro'];
         $scope._boards = ['arduino:avr:uno', 'arduino:avr:nano', 'arduino:avr:mega'];

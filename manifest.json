@@ -22,7 +22,7 @@
             "connect": "*"
         }
     },
-    "content_security_policy": "default-src 'self' http://localhost/*",
+    //"content_security_policy": "default-src 'self' http://*",
 
     "permissions": [
         { "fileSystem": ["write", "retainEntries", "directory"] },
