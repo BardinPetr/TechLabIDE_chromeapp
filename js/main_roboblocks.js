@@ -63,6 +63,16 @@ function toogleCode() {
 }
 
 
+function hideAll() {
+    $('#code').fadeOut();
+    $('#blockly').fadeOut(2000);
+}
+
+function showAll() {
+    $('#code').fadeIn(2000);
+    $('#blockly').fadeIn(2000);
+}
+
 function escapeCode(code) {
     var str = code;
     str = str.replace(/</g, "&lt;");

@@ -6,6 +6,24 @@ function log(e) {
     console.log(e);
 }
 
+function showSettings() {
+    hideAll();
+    $('#settings').fadeIn(2000);
+}
+
+function hideSettings() {
+    showAll();
+    $('#settings').fadeOut(2000);
+}
+
+function toogleSettings() {
+    if ($('#settings').css('display') == 'none') {
+        showSettings();
+    } else {
+        hideSettings();
+    }
+}
+
 var accepts_s1 = [{
     mimeTypes: [
         "application/tlab"
@@ -97,7 +115,7 @@ app.controller("Ctrl", function($scope, $http) {
         });
     };
     $scope.set_onClick = function() {
-
+        toogleSettings();
     };
 
     //Port
@@ -171,6 +189,18 @@ app.controller("Ctrl", function($scope, $http) {
 
     //init
     $scope.init = function() {
+        /*
+        $.ajax({
+            type: "POST",
+            url: 'http://localhost:2000',
+            dataType: 'json',
+            async: true,
+            data: JSON.stringify(obj),
+            success: function(result, status, xhr) {
+
+            }
+        })
+*/
         $("#popup_started").hide();
         $("#popup_ok_c").hide();
         $("#popup_ok_u").hide();
@@ -178,6 +208,7 @@ app.controller("Ctrl", function($scope, $http) {
         $("#popup_fail_u").hide();
         $("#popup_file_o").hide();
         $("#popup_file_s").hide();
+        hideSettings();
 
         $scope.boards = ['arduino uno', 'arduino nano', 'arduino mega', 'arduino micro'];
         $scope._boards = ['arduino:avr:uno', 'arduino:avr:nano', 'arduino:avr:mega'];

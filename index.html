@@ -94,35 +94,71 @@
             </div>
         </nav>
         <div class="_container">
-            <div id="popup_ok_c" class="alert alert-success alert-dismissable fade in">
+            <div id="popup_ok_c" class="alert alert-success alert-dismissable fade in" style="display: none;">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Success!</strong> Code sucessfully compiled. No errors!
+                <strong>Завершено! Ошибок нет!</strong> Код скомпилирован!
             </div>
-            <div id="popup_ok_u" class="alert alert-success alert-dismissable fade in">
+            <div id="popup_ok_u" class="alert alert-success alert-dismissable fade in" style="display: none;">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Success!</strong> Code sucessfully uploaded to Arduino
+                <strong>Завершено!</strong> Код загружен!
             </div>
-            <div id="popup_fail_c" class="alert alert-danger alert-dismissable fade in">
+            <div id="popup_fail_c" class="alert alert-danger alert-dismissable fade in" style="display: none;">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Error!</strong> Code compilation failed
+                <strong>Есть проблемы!</strong> Компиляция не удалась!
             </div>
-            <div id="popup_fail_u" class="alert alert-danger alert-dismissable fade in">
+            <div id="popup_fail_u" class="alert alert-danger alert-dismissable fade in" style="display: none;">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Error!</strong> Code uploading failed
+                <strong>Есть проблемы!</strong> Загрузка не удалась!
             </div>
-            <div id="popup_started" class="alert alert-info alert-dismissable fade in">
+            <div id="popup_started" class="alert alert-info alert-dismissable fade in" style="display: none;">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>Compilation started</strong>
+                <strong>Компиляция кода началась</strong>
             </div>
-            <div id="popup_file_o" class="alert alert-info alert-dismissable fade in">
+            <div id="popup_file_o" class="alert alert-info alert-dismissable fade in" style="display: none;">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>File sucessfully loaded</strong>
+                <strong>Файл с проектом загружен</strong>
             </div>
-            <div id="popup_file_s" class="alert alert-info alert-dismissable fade in">
+            <div id="popup_file_s" class="alert alert-info alert-dismissable fade in" style="display: none;">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <strong>File sucessfully saved</strong>
+                <strong>Файл с проектом сохранен</strong>
             </div>
 
+            <div id="settings" class="panel panel-primary" style="display: none;">
+                <div class="panel-heading">
+                    <div class="row" style="margin-right: 5px; line-height:35px;">
+                        <div class="col-md-2" style="padding:0 15px; line-height:35px;">
+                            <span class="glyphicon glyphicon-cog"></span> Настройки
+                        </div>
+                        <div class="col-md-9"></div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove"></span> Закрыть
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email">Email:</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="email" placeholder="Enter email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="pwd">Password:</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <xml id="startBlocks" style="display: none;">
                 <block type="controls_setupLoop" deletable="true"></block>
             </xml>
