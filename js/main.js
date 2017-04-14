@@ -140,7 +140,7 @@ app.controller("Ctrl", function($scope, $http) {
 
         var code = _get_code();
 
-        var e = "http://localhost:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
+        var e = "http://bardin.petr.fvds.ru:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
         e = encodeURI(e);
 
         $http.get(e)
@@ -165,7 +165,7 @@ app.controller("Ctrl", function($scope, $http) {
 
         var code = _get_code();
 
-        var e = "http://localhost:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
+        var e = "http://bardin.petr.fvds.ru:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
         e = encodeURI(e);
 
         $http.get(e)
@@ -210,8 +210,8 @@ app.controller("Ctrl", function($scope, $http) {
         $("#popup_file_s").hide();
         hideSettings();
 
-        $scope.boards = ['arduino uno', 'arduino nano', 'arduino mega', 'arduino micro'];
-        $scope._boards = ['arduino:avr:uno', 'arduino:avr:nano', 'arduino:avr:mega'];
+        $scope.boards = ['arduino uno', 'arduino nano', 'arduino mega'];
+        $scope._boards = ['arduino:avr:uno', 'arduino:avr:nano:cpu=atmega328', 'arduino:avr:mega:cpu=atmega2560'];
         $scope.board = $scope.boards[0];
         $scope._board = $scope._boards[0];
 

@@ -15,7 +15,7 @@
     "author": "BardinPetr",
 
     "externally_connectable": {
-        "matches": ["http://localhost/*"]
+        "matches": ["http://localhost/*", "http://bardin.petr.fvds.ru:2000/*", "https://bardin.petr.fvds.ru:2000/*"]
     },
     "sockets": {
         "tcp": {
