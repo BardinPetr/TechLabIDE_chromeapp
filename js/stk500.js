@@ -227,8 +227,10 @@ SerialConnection.prototype.onConnectComplete = function(connectionInfo) {
     serial.onReceive.addListener(this.boundOnReceive);
     serial.onReceiveError.addListener(this.boundOnReceiveError);
     this.onConnect.dispatch();
-    serial.setControlSignals(connection.connectionId, DTRModeOn, function(result) {});
+    serial.setControlSignals(connection.connectionId, DTRRTSOn, function(result) {});
 
+    reset();
+    test();
 };
 
 
@@ -236,6 +238,11 @@ SerialConnection.prototype.onReceive = function(receiveInfo) {
     document.getElementById("connect_img").src = "media/icons/power-plug.png";
     if (receiveInfo.connectionId !== this.connectionId) {
         return;
+    }
+
+    if ($('#terminal').css('display') != 'none') {
+        log(receiveInfo);
+        //appendOutput(receiveInfo.data)
     }
 
     this.lineBuffer += ab2str(receiveInfo.data);
@@ -264,18 +271,27 @@ SerialConnection.prototype.getDevices = function(callback) {
 };
 
 SerialConnection.prototype.connect = function(path) {
-    serial.connect(path, SerialOpts, this.onConnectComplete.bind(this))
+    try {
+        serial.connect(path, SerialOpts, this.onConnectComplete.bind(this))
+    } catch (ex) {
+        console.log(ex)
+    }
 };
 
 SerialConnection.prototype.send = function(msg) {
-    if (this.connectionId < 0) {
-        throw 'Invalid connection';
+    try {
+        serial.send(this.connectionId, str2ab(msg), function() {});
+    } catch (ex) {
+        console.log(ex)
     }
-    serial.send(this.connectionId, str2ab(msg), function() {});
 };
 
 SerialConnection.prototype.disconnect = function() {
-    serial.disconnect(this.connectionId, function() { document.getElementById("connect_img").src = "media/icons/power-plug-off.png"; })
+    try {
+        serial.disconnect(this.connectionId, function() { document.getElementById("connect_img").src = "media/icons/power-plug-off.png"; })
+    } catch (ex) {
+        console.log(ex)
+    }
 };
 
 

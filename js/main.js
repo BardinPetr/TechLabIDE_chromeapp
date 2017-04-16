@@ -24,6 +24,37 @@ function toogleSettings() {
     }
 }
 
+
+function showTerminal() {
+    hideAll();
+    $('#terminal').fadeIn(2000);
+}
+
+function hideTerminal() {
+    showAll();
+    $('#terminal').fadeOut(2000);
+}
+
+function toogleTerminal() {
+    if ($('#terminal').css('display') == 'none') {
+        showTerminal();
+    } else {
+        hideTerminal();
+    }
+}
+
+function appendOutput(text) {
+    $("#output").append(text + "\n")
+}
+
+function appendOutputSend(text) {
+    $("#output").append("> " + text + "\n")
+}
+
+function clearOutput() {
+    $("#output").text("Сюда придут данные\n");
+}
+
 var accepts_s1 = [{
     mimeTypes: [
         "application/tlab"
@@ -42,6 +73,14 @@ var accepts_o = [{
     ],
     extensions: ["tlab"]
 }];
+
+chrome.app.window.onClosed.addListener(function() {
+    connection.disconnect();
+})
+
+connection.onReceive = function() {
+
+}
 
 app.controller("Ctrl", function($scope, $http) {
     $scope.r = 0;
@@ -125,13 +164,15 @@ app.controller("Ctrl", function($scope, $http) {
 
         connection.disconnect();
         connection.connect($scope.port);
-        reset();
-        test();
     };
     $scope.setBoard = function(name) {
         $scope.board = name;
         $scope._board = $scope._boards[$scope.boards.findIndex(function(d) { return d == name })];
     };
+
+    $scope.close = function() {
+        connection.disconnect();
+    }
 
     //Sketch
     $scope.compile = function() {
@@ -140,7 +181,7 @@ app.controller("Ctrl", function($scope, $http) {
 
         var code = _get_code();
 
-        var e = "http://bardin.petr.fvds.ru:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
+        var e = $scope.srv_url + ":" + $scope.srv_port + "/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
         e = encodeURI(e);
 
         $http.get(e)
@@ -165,7 +206,7 @@ app.controller("Ctrl", function($scope, $http) {
 
         var code = _get_code();
 
-        var e = "http://bardin.petr.fvds.ru:2000/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
+        var e = $scope.srv_url + ":" + $scope.srv_port + "/?data=" + JSON.stringify({ "board": $scope._board, "sketch": code });
         e = encodeURI(e);
 
         $http.get(e)
@@ -182,10 +223,29 @@ app.controller("Ctrl", function($scope, $http) {
             });
     };
 
+    $scope.set_srvParams = function() {
+        $scope.srv_url = $("#url").val();
+        $scope.srv_port = $("#port").val();
+    }
+
+    $scope.closeSettings = function() { hideSettings(); }
+
     //Terminal
     $scope.terminal = function() {
-
+        clearOutput();
+        toogleTerminal();
     };
+    $scope.closeTerminal = function() { hideTerminal(); }
+
+    $scope.serialSend = function() {
+        var sendText = $("#sendText").val();
+        appendOutputSend(sendText);
+        try {
+            connection.send(sendText);
+        } catch (ex) {
+            log(ex)
+        }
+    }
 
     //init
     $scope.init = function() {
@@ -208,12 +268,19 @@ app.controller("Ctrl", function($scope, $http) {
         $("#popup_fail_u").hide();
         $("#popup_file_o").hide();
         $("#popup_file_s").hide();
+
         hideSettings();
+        hideTerminal();
 
         $scope.boards = ['arduino uno', 'arduino nano', 'arduino mega'];
         $scope._boards = ['arduino:avr:uno', 'arduino:avr:nano:cpu=atmega328', 'arduino:avr:mega:cpu=atmega2560'];
         $scope.board = $scope.boards[0];
         $scope._board = $scope._boards[0];
+
+        $scope.srv_url = "http://bardin.petr.fvds.ru";
+        $scope.srv_port = "2000";
+        $("#url").val($scope.srv_url);
+        $("#port").val($scope.srv_port);
 
         $scope.refreshPorts(function() {
             if ($scope.ports.length > 0) {
