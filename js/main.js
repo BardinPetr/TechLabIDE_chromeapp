@@ -233,6 +233,14 @@ app.controller("Ctrl", function($scope, $http) {
         connection.connect($scope.port, $scope.br);
         clearOutput();
         toogleTerminal();
+
+        var h = $("#panelB").height();
+        var w = $("#panelB").width();
+
+        $("#div_o").height(h - 200);
+        $("#div_o").width(w - 30);
+        $("#output").height(h - 200);
+        $("#output").width(w - 60);
     };
     $scope.closeTerminal = function() {
         hideTerminal();
