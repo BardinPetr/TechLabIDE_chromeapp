@@ -241,22 +241,21 @@ SerialConnection.prototype.onReceive = function(receiveInfo) {
     }
 
     if ($('#terminal').css('display') != 'none') {
-        log(receiveInfo);
-        //appendOutput(receiveInfo.data)
-    }
-
-    this.lineBuffer += ab2str(receiveInfo.data);
-    var d = new Date();
-    var n = d.getMilliseconds();
-    var buffer = this.lineBuffer;
-    var decoded = "";
-    for (x = 0; x < buffer.length; x++) { decoded += "[" + buffer.charCodeAt(x).toString(16) + "]"; }
-    this.lineBuffer = "";
-    var index;
-    while ((index = this.lineBuffer.indexOf('\n')) >= 0) {
-        var line = this.lineBuffer.substr(0, index + 1);
-        this.onReadLine.dispatch(line);
-        this.lineBuffer = this.lineBuffer.substr(index + 1);
+        appendOutput(ab2str(receiveInfo.data));
+    } else {
+        this.lineBuffer += ab2str(receiveInfo.data);
+        var d = new Date();
+        var n = d.getMilliseconds();
+        var buffer = this.lineBuffer;
+        var decoded = "";
+        for (x = 0; x < buffer.length; x++) { decoded += "[" + buffer.charCodeAt(x).toString(16) + "]"; }
+        this.lineBuffer = "";
+        var index;
+        while ((index = this.lineBuffer.indexOf('\n')) >= 0) {
+            var line = this.lineBuffer.substr(0, index + 1);
+            this.onReadLine.dispatch(line);
+            this.lineBuffer = this.lineBuffer.substr(index + 1);
+        }
     }
 };
 
@@ -270,9 +269,9 @@ SerialConnection.prototype.getDevices = function(callback) {
     serial.getDevices(callback)
 };
 
-SerialConnection.prototype.connect = function(path) {
+SerialConnection.prototype.connect = function(path, br) {
     try {
-        serial.connect(path, SerialOpts, this.onConnectComplete.bind(this))
+        serial.connect(path, { bitrate: br }, this.onConnectComplete.bind(this))
     } catch (ex) {
         console.log(ex)
     }

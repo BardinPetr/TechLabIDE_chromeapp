@@ -44,7 +44,7 @@ function toogleTerminal() {
 }
 
 function appendOutput(text) {
-    $("#output").append(text + "\n")
+    $("#output").append(text)
 }
 
 function appendOutputSend(text) {
@@ -73,10 +73,6 @@ var accepts_o = [{
     ],
     extensions: ["tlab"]
 }];
-
-chrome.app.window.onClosed.addListener(function() {
-    connection.disconnect();
-})
 
 connection.onReceive = function() {
 
@@ -163,7 +159,7 @@ app.controller("Ctrl", function($scope, $http) {
         document.getElementById("connect_img").src = "media/icons/power-plug-off.png";
 
         connection.disconnect();
-        connection.connect($scope.port);
+        connection.connect($scope.port, 115200);
     };
     $scope.setBoard = function(name) {
         $scope.board = name;
@@ -232,11 +228,25 @@ app.controller("Ctrl", function($scope, $http) {
 
     //Terminal
     $scope.terminal = function() {
+        connection.disconnect();
+        connection = new SerialConnection();
+        connection.connect($scope.port, $scope.br);
         clearOutput();
         toogleTerminal();
     };
-    $scope.closeTerminal = function() { hideTerminal(); }
-
+    $scope.closeTerminal = function() {
+        hideTerminal();
+        connection.disconnect();
+        connection = new SerialConnection();
+        connection.connect($scope.port, 115200);
+    }
+    $scope.setBr = function(i) {
+        clearOutput();
+        connection.disconnect();
+        connection = new SerialConnection();
+        connection.connect($scope.port, i);
+        $scope.br = i;
+    }
     $scope.serialSend = function() {
         var sendText = $("#sendText").val();
         appendOutputSend(sendText);
@@ -276,6 +286,9 @@ app.controller("Ctrl", function($scope, $http) {
         $scope._boards = ['arduino:avr:uno', 'arduino:avr:nano:cpu=atmega328', 'arduino:avr:mega:cpu=atmega2560'];
         $scope.board = $scope.boards[0];
         $scope._board = $scope._boards[0];
+
+        $scope.brs = [4800, 9600, 38400, 115200]
+        $scope.br = 9600;
 
         $scope.srv_url = "http://bardin.petr.fvds.ru";
         $scope.srv_port = "2000";
