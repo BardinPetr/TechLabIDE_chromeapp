@@ -19,7 +19,6 @@ function stk500_program() {
 }
 
 command = {
-
     "Sync_CRC_EOP": 0x20,
     "GET_SYNC": 0x30,
     "GET_SIGN_ON": 0x31,
@@ -128,10 +127,10 @@ function stk500_test() {
     transmitPacket(String.fromCharCode(command.GET_SYNC) + "" + String.fromCharCode(command.Sync_CRC_EOP), 0);
     transmitPacket(String.fromCharCode(command.GET_SYNC) + "" + String.fromCharCode(command.Sync_CRC_EOP), 10);
     transmitPacket(String.fromCharCode(command.GET_SYNC) + "" + String.fromCharCode(command.Sync_CRC_EOP), 10);
-    stk500_getparam("HW_VER", 50);
-    stk500_getparam("SW_MAJOR", 50);
-    stk500_getparam("SW_MINOR", 50);
-    stk500_getparam("TOPCARD_DETECT", 50);
+    stk500_getparam("HW_VER", 40);
+    stk500_getparam("SW_MAJOR", 40);
+    stk500_getparam("SW_MINOR", 40);
+    stk500_getparam("TOPCARD_DETECT", 40);
     timer = 0;
 }
 
@@ -144,8 +143,8 @@ function d2b(number) {
 }
 
 function stk500_prgpage(address, data, delay, flag) {
-    address = hexpad16(address.toString(16)); /* convert and pad number to hex */
-    address = address[2] + address[3] + address[0] + address[1]; /* make LSB first */
+    address = hexpad16(address.toString(16));
+    address = address[2] + address[3] + address[0] + address[1];
     address = String.fromCharCode(parseInt(address[0] + address[1], 16)) + String.fromCharCode(parseInt(address[2] + address[3], 16)); /* h2b */
     transmitPacket(d2b(command.LOAD_ADDRESS) + address + d2b(command.Sync_CRC_EOP), delay);
     var debug = "";
@@ -156,14 +155,14 @@ function stk500_prgpage(address, data, delay, flag) {
 
 function stk500_upload(heximage) {
     flashblock = 0;
-    transmitPacket(d2b(command.ENTER_PROGMODE) + d2b(command.Sync_CRC_EOP), 50);
+    transmitPacket(d2b(command.ENTER_PROGMODE) + d2b(command.Sync_CRC_EOP), 40);
     var blocksize = 128;
     blk = Math.ceil(heximage.length / blocksize);
     for (b = 0; b < Math.ceil(heximage.length / blocksize); b++) {
         var currentbyte = blocksize * b;
         var block = heximage.substr(currentbyte, blocksize);
         flag = 0;
-        stk500_prgpage(flashblock, block, 250);
+        stk500_prgpage(flashblock, block, 40);
         flashblock = flashblock + 64;
     }
     $("#popup_ok_u").show();

@@ -167,6 +167,7 @@ app.controller("Ctrl", function($scope, $http) {
         $scope.board = name;
         $scope._board = $scope._boards[$scope.boards.findIndex(function(d) { return d == name })];
         $scope.uploadBr = $scope.uploadBrs[$scope.boards.findIndex(function(d) { return d == name })];
+        $scope.setPort($scope.port);
     };
 
     $scope.close = function() {
