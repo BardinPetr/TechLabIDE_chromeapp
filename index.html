@@ -58,8 +58,8 @@
                                 <span class="caret"></span>
                             </button>
                                 <ul class="dropdown-menu">
-                                    <li ng-repeat="i in ports">
-                                        <a data-ng-click="setPort(i)" ng-bind="i" href="#"></a>
+                                    <li ng-repeat="i in portsMeta">
+                                        <a data-ng-click="setPort(i.path)" ng-bind="i.path" href="#" title="{{ i.displayName }}"></a>
                                     </li>
                                 </ul>
                             </div>

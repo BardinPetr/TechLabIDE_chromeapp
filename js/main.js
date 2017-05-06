@@ -84,9 +84,11 @@ app.controller("Ctrl", function($scope, $http) {
     $scope.refreshPorts = function(callback) {
         chrome.serial.getDevices(function(_ports) {
             $scope.ports = [];
+            $scope.portsMeta = [];
 
             for (var i = 0; i < _ports.length; i++) {
                 $scope.ports = $scope.ports.concat(_ports[i].path);
+                $scope.portsMeta = $scope.portsMeta.concat(_ports[i]);
             }
             callback();
         });
@@ -159,11 +161,12 @@ app.controller("Ctrl", function($scope, $http) {
         document.getElementById("connect_img").src = "media/icons/power-plug-off.png";
 
         connection.disconnect();
-        connection.connect($scope.port, 115200);
+        connection.connect($scope.port, $scope.uploadBr);
     };
     $scope.setBoard = function(name) {
         $scope.board = name;
         $scope._board = $scope._boards[$scope.boards.findIndex(function(d) { return d == name })];
+        $scope.uploadBr = $scope.uploadBrs[$scope.boards.findIndex(function(d) { return d == name })];
     };
 
     $scope.close = function() {
@@ -246,7 +249,7 @@ app.controller("Ctrl", function($scope, $http) {
         hideTerminal();
         connection.disconnect();
         connection = new SerialConnection();
-        connection.connect($scope.port, 115200);
+        connection.connect($scope.port, $scope.uploadBr);
     }
     $scope.setBr = function(i) {
         clearOutput();
@@ -294,9 +297,13 @@ app.controller("Ctrl", function($scope, $http) {
         $scope._boards = ['arduino:avr:uno', 'arduino:avr:nano:cpu=atmega328', 'arduino:avr:mega:cpu=atmega2560'];
         $scope.board = $scope.boards[0];
         $scope._board = $scope._boards[0];
+        $scope.uploadBrs = [115200, 57600, 115200];
+        $scope.uploadBr = 115200;
 
-        $scope.brs = [4800, 9600, 38400, 115200]
+        $scope.brs = [4800, 9600, 38400, 115200];
         $scope.br = 9600;
+
+        $scope.portsMeta = [];
 
         $scope.srv_url = "http://bardin.petr.fvds.ru";
         $scope.srv_port = "2000";
@@ -316,8 +323,13 @@ app.controller("Ctrl", function($scope, $http) {
                     $scope.$apply();
                 });
             }
+            log($scope.portsMeta)
         });
 
         chrome.runtime.getBackgroundPage(function(bg) {});
+
+        setInterval(function() {
+            $scope.refreshPorts(function() { $scope.$apply(); });
+        }, 4000);
     };
 });
