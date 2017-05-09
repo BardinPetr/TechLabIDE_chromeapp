@@ -41,10 +41,10 @@
                         <li>
                             <div class="btn-group">
                                 <button class="btn btn-primary" style="height:60px" data-ng-click="compile()">
-                                    <p style="color:black;"><img src="media/icons/check_code.png"/>Проверить</p>
+                                    <img src="media/icons/check_code.png"/>
                                 </button>
                                 <button class="btn btn-warning" style="height:60px" data-ng-click="upload()">
-                                    <p style="color:black;"><img src="media/icons/upload_code.png"/>Загрузить</p>
+                                    <img src="media/icons/upload_code.png"/>
                                 </button>
                         </li>
                         <li class="divider">
@@ -52,14 +52,14 @@
                         </li>
                         <li>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button id="123" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="media/icons/usb_m.png"/>
                                 Порт: {{port}} 
                                 <span class="caret"></span>
                             </button>
                                 <ul class="dropdown-menu">
                                     <li ng-repeat="i in portsMeta">
-                                        <a data-ng-click="setPort(i.path)" ng-bind="i.path" href="#" title="{{ i.displayName }}"></a>
+                                        <a data-ng-click="setPort(i.path)" ng-bind="i.path + '- ' + i.displayName" href="#" title="{{ i.displayName }}"></a>
                                     </li>
                                 </ul>
                             </div>
