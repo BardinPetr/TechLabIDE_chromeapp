@@ -1,6 +1,7 @@
 var app = angular.module("TechLabIDE", []);
 
 var connection = new SerialConnection();
+var stkVersion = false;
 
 function log(e) {
     console.log(e);
@@ -213,7 +214,12 @@ app.controller("Ctrl", function($scope, $http) {
             .then(function(response) {
                 if (response.data.code == 0) {
                     var hex = response.data.hex;
-                    upload(hex);
+                    if (!stkVersion) {
+                        stk500_upload(hex);
+                    } else {
+                        stk500_upload(hex);
+                    }
+
                 } else {
                     $("#popup_fail_c").show();
                     $("#popup_fail_c").fadeOut(7000);
@@ -271,18 +277,6 @@ app.controller("Ctrl", function($scope, $http) {
 
     //init
     $scope.init = function() {
-        /*
-        $.ajax({
-            type: "POST",
-            url: 'http://localhost:2000',
-            dataType: 'json',
-            async: true,
-            data: JSON.stringify(obj),
-            success: function(result, status, xhr) {
-
-            }
-        })
-*/
         $("#popup_started").hide();
         $("#popup_ok_c").hide();
         $("#popup_ok_u").hide();
