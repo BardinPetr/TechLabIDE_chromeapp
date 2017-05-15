@@ -2,6 +2,7 @@ var app = angular.module("TechLabIDE", []);
 
 var connection = new SerialConnection();
 var stkVersion = false;
+var boardid = 0;
 
 function log(e) {
     console.log(e);
@@ -98,6 +99,8 @@ app.controller("Ctrl", function($scope, $http) {
     //Handlers for "file" dropdown menu
     $scope.new_onClick = function() {
         resetWorkspace();
+        var xml2 = Blockly.Xml.textToDom("<xml xmlns='http://www.w3.org/1999/xhtml'><block type='controls_setupLoop' deletable='false'></block></xml>");
+        Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(), xml2);
         $scope.wEntryBlocks = null;
         $scope.wEntryCode = null;
     };
@@ -110,7 +113,6 @@ app.controller("Ctrl", function($scope, $http) {
                 reader.onloadend = function(e) {
                     $("#popup_file_o").show();
                     $("#popup_file_o").fadeOut(3000);
-                    resetWorkspace();
                     set_xml(e.target.result);
                     $scope.wEntryBlocks = readOnlyEntry;
                     $scope.wEntryCode = null;
@@ -196,6 +198,7 @@ app.controller("Ctrl", function($scope, $http) {
         $scope._board = $scope._boards[$scope.boards.findIndex(function(d) { return d == name })];
         $scope.uploadBr = $scope.uploadBrs[$scope.boards.findIndex(function(d) { return d == name })];
         $scope.setPort($scope.port);
+        boardid = $scope.boards.findIndex(function(d) { return d == name });
     };
 
     $scope.close = function() {
@@ -348,7 +351,8 @@ app.controller("Ctrl", function($scope, $http) {
                     $scope.$apply();
                 });
             }
-            log($scope.portsMeta)
+            log($scope.portsMeta);
+            $scope.setPort($scope.port);
         });
 
         chrome.runtime.getBackgroundPage(function(bg) {});
@@ -367,5 +371,7 @@ app.controller("Ctrl", function($scope, $http) {
                     break;
             }
         });
+
+        $scope.new_onClick();
     };
 });

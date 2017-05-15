@@ -164,8 +164,9 @@
                         <div class="col-md-2" style="padding:0 15px; line-height:35px;">
                             <span class="glyphicon glyphicon-console"></span> Терминал
                         </div>
-                        <div class="col-md-7"></div>
-                        <div class="col-md-2">
+                        <div class="col-md-7">
+                        </div>
+                        <div class="col-md-3">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Скорость: {{br}} 
@@ -177,8 +178,6 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
-                        <div class="col-md-1">
                             <button ng-click="closeTerminal()" type="button" class="btn btn-danger">
                             <span class="glyphicon glyphicon-remove"></span> Закрыть
                             </button>
@@ -201,9 +200,7 @@
                 </div>
             </div>
 
-            <xml id="startBlocks" style="display: none;">
-                <block type="controls_setupLoop" deletable="false"></block>
-            </xml>
+            <xml id="startBlocks" style="display: none;"></xml>
             <div id="wrap">
                 <div id="blockly" style="float: left; width: 66%;"></div>
                 <div id="code" style="float: right; width: 34%;"></div>

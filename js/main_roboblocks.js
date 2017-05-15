@@ -102,6 +102,8 @@ function get_xml() {
 
 function set_xml(data) {
     resetWorkspace();
-    var xml = Blockly.Xml.textToDom(data);
+    var xml = Blockly.Xml.textToDom("<xml xmlns='http://www.w3.org/1999/xhtml'></xml>");
     Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(), xml);
+    var xml2 = Blockly.Xml.textToDom(data);
+    Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(), xml2);
 }
