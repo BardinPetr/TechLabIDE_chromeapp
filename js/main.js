@@ -98,6 +98,8 @@ app.controller("Ctrl", function($scope, $http) {
     //Handlers for "file" dropdown menu
     $scope.new_onClick = function() {
         resetWorkspace();
+        $scope.wEntryBlocks = null;
+        $scope.wEntryCode = null;
     };
     $scope.open_onClick = function() {
         chrome.fileSystem.chooseEntry({ type: 'openFile', accepts: accepts_o }, function(readOnlyEntry) {
@@ -110,12 +112,36 @@ app.controller("Ctrl", function($scope, $http) {
                     $("#popup_file_o").fadeOut(3000);
                     resetWorkspace();
                     set_xml(e.target.result);
+                    $scope.wEntryBlocks = readOnlyEntry;
+                    $scope.wEntryCode = null;
                 };
 
                 reader.readAsText(file);
             });
         });
     };
+    $scope.save_onClick = function() {
+        if ($scope.wEntryBlocks != null) {
+            $scope.wEntryBlocks.createWriter(function(writer) {
+                writer.onerror = function(data) {
+                    log(data);
+                };
+                writer.onwriteend = function(e) {
+                    console.log('write complete');
+                    $("#popup_file_s").show();
+                    $("#popup_file_s").fadeOut(3000);
+                    $scope.wEntryBlocks = writableFileEntry;
+                };
+                var blob = new Blob([get_xml()], { type: 'text/plain' });
+                writer.write(blob);
+            }, function(data) {
+                log(data);
+            });
+        } else {
+            $scope.saveblocks_onClick();
+        }
+    };
+
     $scope.savecode_onClick = function() {
         chrome.fileSystem.chooseEntry({ type: 'saveFile', accepts: accepts_s2 }, function(writableFileEntry) {
             writableFileEntry.createWriter(function(writer) {
@@ -144,6 +170,7 @@ app.controller("Ctrl", function($scope, $http) {
                     console.log('write complete');
                     $("#popup_file_s").show();
                     $("#popup_file_s").fadeOut(3000);
+                    $scope.wEntryBlocks = writableFileEntry;
                 };
                 var blob = new Blob([get_xml()], { type: 'text/plain' });
                 writer.write(blob);
@@ -288,17 +315,20 @@ app.controller("Ctrl", function($scope, $http) {
         hideSettings();
         hideTerminal();
 
-        $scope.boards = ['arduino uno', 'arduino nano', 'arduino mega'];
-        $scope._boards = ['arduino:avr:uno', 'arduino:avr:nano:cpu=atmega328', 'arduino:avr:mega:cpu=atmega2560'];
+        $scope.boards = ['arduino uno', 'arduino nano'];
+        $scope._boards = ['arduino:avr:uno', 'arduino:avr:nano:cpu=atmega328'];
         $scope.board = $scope.boards[0];
         $scope._board = $scope._boards[0];
-        $scope.uploadBrs = [115200, 57600, 115200];
+        $scope.uploadBrs = [115200, 57600];
         $scope.uploadBr = 115200;
 
         $scope.brs = [4800, 9600, 38400, 115200];
         $scope.br = 9600;
 
         $scope.portsMeta = [];
+
+        $scope.wEntryBlocks = null;
+        $scope.wEntryCode = null;
 
         $scope.srv_url = "http://bardin.petr.fvds.ru";
         $scope.srv_port = "2000";
@@ -326,5 +356,16 @@ app.controller("Ctrl", function($scope, $http) {
         setInterval(function() {
             $scope.refreshPorts(function() { $scope.$apply(); });
         }, 4000);
+
+        chrome.commands.onCommand.addListener(function(command) {
+            switch (command) {
+                case "upload":
+                    $scope.upload();
+                    break;
+                case "save":
+                    $scope.save_onClick();
+                    break;
+            }
+        });
     };
 });

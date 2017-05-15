@@ -22,7 +22,23 @@
             "connect": "*"
         }
     },
-    //"content_security_policy": "default-src 'self' http://*",
+
+    "commands": {
+        "save": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+S",
+                "mac": "Command+Shift+S"
+            },
+            "description": "Save"
+        },
+        "upload": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+U",
+                "mac": "Command+Shift+U"
+            },
+            "description": "upload"
+        }
+    },
 
     "permissions": [
         { "fileSystem": ["write", "retainEntries", "directory"] },
