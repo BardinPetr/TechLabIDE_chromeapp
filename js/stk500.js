@@ -1,3 +1,5 @@
+var ut = [200, 100];
+
 command = {
     "Sync_CRC_EOP": 0x20,
     "GET_SYNC": 0x30,
@@ -186,7 +188,7 @@ function _stk500_upload(heximage) {
         var currentbyte = blocksize * b;
         var block = heximage.substr(currentbyte, blocksize);
         flag = 0;
-        stk500_prgpage(flashblock, block, 200);
+        stk500_prgpage(flashblock, block, ut[boardid]);
         flashblock = flashblock + 64;
     }
     $("#popup_ok_u").show();
