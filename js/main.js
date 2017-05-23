@@ -233,7 +233,23 @@ app.controller("Ctrl", function($scope, $http) {
 
     $scope.upload = function() {
         $("#popup_started").show();
-        $("#popup_started").fadeOut(3000);
+        $("#popup_loading").show();
+        $("#pb").width("0%");
+        setTimeout(function() {
+            $("#pb").width("10%");
+        }, 1000);
+        setTimeout(function() {
+            $("#pb").width("20%");
+        }, 2000);
+        setTimeout(function() {
+            $("#pb").width("30%");
+        }, 3000);
+        setTimeout(function() {
+            $("#pb").width("40%");
+        }, 4000);
+        setTimeout(function() {
+            $("#pb").width("50%");
+        }, 5000);
 
         var code = _get_code();
 
@@ -249,7 +265,7 @@ app.controller("Ctrl", function($scope, $http) {
                     } else {
                         stk500_upload(hex);
                     }
-
+                    $("#popup_started").fadeOut(3000);
                 } else {
                     $("#popup_fail_c").show();
                     $("#popup_fail_c").fadeOut(7000);
@@ -372,6 +388,9 @@ app.controller("Ctrl", function($scope, $http) {
             }
         });
 
-        $scope.new_onClick();
+        setTimeout(function() {
+            roboblocks_init();
+            $scope.new_onClick();
+        }, 300);
     };
 });

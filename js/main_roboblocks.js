@@ -3,53 +3,59 @@ if (window.roboblocksLanguage === undefined ||
     var roboblocksLanguage = 'ru';
 }
 
-RoboBlocks.load({
-    zoom: 0.5
-});
+function rb_update() {
+    $('.blocklySvg, #blockly').height('100%');
+    $('.blocklySvg').width('100%');
+    $('#code').height('100%');
+    $('#code').width('33%');
+    $('.blocklyTreeRow').height("26px");
+    $('.blocklyTreeRow').css("line-height", "26px");
+}
 
-var el = document.getElementById('blockly');
-Blockly.inject(el, {
-    toolbox: Blockly.createToolbox()
-});
-
-Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(),
-    document.getElementById('startBlocks'));
-
-$('.blocklySvg, #blockly').height('100%');
-$('.blocklySvg').width('100%');
-$('#code').height('100%');
-$('#code').width('33%');
-$('.blocklyTreeRow').height("26px");
-$('.blocklyTreeRow').css("line-height", "26px");
-
-var colors = [
-    "",
-    RoboBlocks.LANG_COLOUR_VARIABLES,
-    RoboBlocks.LANG_COLOUR_LOGIC,
-    RoboBlocks.LANG_COLOUR_CONTROL,
-    RoboBlocks.LANG_COLOUR_ADVANCED,
-    RoboBlocks.LANG_COLOUR_PROCEDURES,
-    RoboBlocks.LANG_COLOUR_MATH,
-    RoboBlocks.LANG_COLOUR_COMMUNICATION,
-    RoboBlocks.LANG_COLOUR_LCD,
-    RoboBlocks.LANG_COLOUR_SERVO,
-    RoboBlocks.LANG_COLOUR_TEXT,
-    RoboBlocks.LANG_COLOUR_BQ,
-    RoboBlocks.LANG_COLOUR_ZUM,
-];
-$('.blocklyTreeRow').each(function(i, e) {
-    $(e).prepend('<span class="treeLabelBlock" style="background-color:' + colors[i] + '"></span>');
-});
-
-Blockly.addChangeListener(function() {
-    $('#code').html('<code class="c++"><pre>' +
-        escapeCode(Blockly.Arduino.workspaceToCode()) +
-        '</pre></code>');
-
-    $("pre").each(function(i, e) {
-        hljs.highlightBlock(e);
+function roboblocks_init() {
+    RoboBlocks.load({
+        zoom: 0.5
     });
-});
+
+    var el = document.getElementById('blockly');
+    Blockly.inject(el, {
+        toolbox: Blockly.createToolbox()
+    });
+
+    Blockly.Xml.domToWorkspace(Blockly.getMainWorkspace(),
+        document.getElementById('startBlocks'));
+
+    rb_update();
+
+    var colors = [
+        "",
+        RoboBlocks.LANG_COLOUR_VARIABLES,
+        RoboBlocks.LANG_COLOUR_LOGIC,
+        RoboBlocks.LANG_COLOUR_CONTROL,
+        RoboBlocks.LANG_COLOUR_ADVANCED,
+        RoboBlocks.LANG_COLOUR_PROCEDURES,
+        RoboBlocks.LANG_COLOUR_MATH,
+        RoboBlocks.LANG_COLOUR_COMMUNICATION,
+        RoboBlocks.LANG_COLOUR_LCD,
+        RoboBlocks.LANG_COLOUR_SERVO,
+        RoboBlocks.LANG_COLOUR_TEXT,
+        RoboBlocks.LANG_COLOUR_BQ,
+        RoboBlocks.LANG_COLOUR_ZUM,
+    ];
+    $('.blocklyTreeRow').each(function(i, e) {
+        $(e).prepend('<span class="treeLabelBlock" style="background-color:' + colors[i] + '"></span>');
+    });
+
+    Blockly.addChangeListener(function() {
+        $('#code').html('<code class="c++"><pre>' +
+            escapeCode(Blockly.Arduino.workspaceToCode()) +
+            '</pre></code>');
+
+        $("pre").each(function(i, e) {
+            hljs.highlightBlock(e);
+        });
+    });
+}
 
 function toogleCode() {
     if ($('#code').css('display') == 'none') {

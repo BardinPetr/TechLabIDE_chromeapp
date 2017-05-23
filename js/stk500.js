@@ -75,6 +75,12 @@ var DTRRTSOn = { dtr: true, rts: true };
 var DTRRTSOff = { dtr: false, rts: false };
 var SerialOpts = { bitrate: 115200 };
 
+var pCount = 0;
+var _pCount = 0;
+var uploadRun = false;
+var c = 0;
+var _c = 0;
+
 function stk500_onReceive(data, _this) {
     _this.lineBuffer += ab2str(data);
     var d = new Date();
@@ -100,6 +106,7 @@ function stk500_upload(hexfileascii) {
         if (size == 0) {
             log("complete!\n");
             stk500_program();
+            uploadRun = true;
             return;
         }
         for (y = 0; y < (size * 2); y = y + 2) {
@@ -145,6 +152,23 @@ function transmitPacket(buffer, delay) {
     setTimeout(function() {
         log(".");
         connection.send(buffer);
+        pCount += 0.5;
+        if (pCount === _pCount && uploadRun) {
+            pCount = 0;
+            _pCount = 0;
+            setTimeout(function() {
+                $("#popup_ok_u").show();
+                $("#popup_ok_u").fadeOut(5000);
+                $("#popup_loading").fadeOut(2000);
+            }, 200);
+        }
+        if (pCount + 1 == _c) {
+            _c += c;
+            var ww = document.getElementById("pb").style.width;
+            ww = ww.slice(0, ww.length - 1);
+            ww = parseInt(ww) + 10;
+            document.getElementById("pb").style.width = ww.toString() + "%";
+        }
     }, delay + timer);
     timer = timer + delay;
 }
@@ -180,10 +204,15 @@ function stk500_prgpage(address, data, delay, flag) {
 }
 
 function _stk500_upload(heximage) {
+    uploadRun = true;
     flashblock = 0;
     transmitPacket(d2b(command.ENTER_PROGMODE) + d2b(command.Sync_CRC_EOP), 50);
     var blocksize = 128;
     blk = Math.ceil(heximage.length / blocksize);
+    _pCount = blk + 0.5;
+    pCount = 0;
+    c = Math.floor((_pCount - 0.5) / 5) + 1;
+    _c = c;
     for (b = 0; b < Math.ceil(heximage.length / blocksize); b++) {
         var currentbyte = blocksize * b;
         var block = heximage.substr(currentbyte, blocksize);
@@ -191,7 +220,5 @@ function _stk500_upload(heximage) {
         stk500_prgpage(flashblock, block, ut[boardid]);
         flashblock = flashblock + 64;
     }
-    $("#popup_ok_u").show();
-    $("#popup_ok_u").fadeOut(7000);
     timer = 0;
 }
